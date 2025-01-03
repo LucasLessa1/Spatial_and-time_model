@@ -1,0 +1,76 @@
+# Roteiro
+
+### **1. Experimento: CNN-LSTM Simples**
+
+- **Objetivo**:
+    - Estabelecer um baseline combinando uma CNN simples para extração de características espaciais com um LSTM para modelar dependências temporais.
+- **Arquitetura**:
+    - CNN: Arquitetura leve.
+    - LSTM: LSTM de uma camada com dimensão oculta pequena.
+- **Avaliação**:
+    - Medir desempenho na classificação binária das máscaras de segmentação.
+- **Resultados esperados**:
+    - Determinar a eficácia do LSTM em capturar dependências temporais com baixa complexidade.
+
+---
+
+### **2. Experimento: CNN-Transformer Simples**
+
+- **Objetivo**:
+    - Comparar o desempenho de um modelo temporal baseado em Transformer com o baseline de LSTM.
+- **Arquitetura**:
+    - CNN: Mesma usada no Experimento 1 (e.g., ResNet18).
+    - Transformer: Encode temporal com codificações posicionais.
+- **Avaliação**:
+    - Medir coeficiente Dice e IoU ao longo das sequências.
+    - Avaliar estabilidade de treinamento e uso de recursos em comparação com o LSTM.
+- **Resultados esperados**:
+    - Avaliar se o Transformer pode capturar melhor dependências de longo alcance em dados temporais.
+
+---
+
+### **3. Experimento: CNN-LSTM com U-Net (EfficientNet-B7 como Backbone)**
+
+- **Objetivo**:
+    - Avaliar o impacto de usar um backbone mais poderoso para a extração de características espaciais.
+- **Arquitetura**:
+    - CNN: U-Net com EfficientNet-B7 como encoder.
+    - LSTM: Mesma configuração usada no Experimento 1.
+- **Avaliação**:
+    - Medir a melhoria na precisão da segmentação e o impacto no tempo de treinamento.
+- **Resultados esperados**:
+    - Quantificar o ganho na extração de características espaciais ao usar um backbone de última geração.
+
+---
+
+### **4. Experimento: CNN 3D**
+
+- **Objetivo**:
+    - Avaliar a modelagem direta de dados espaço-temporais como volumes 3D.
+- **Arquitetura**:
+    - CNN: Convoluções 3D com backbone leve ou eficiente (e.g., ResNet3D ou 3D-UNet).
+    - Formato de Entrada: (T, C, H, W) tratado como um único volume.
+- **Avaliação**:
+    - Coeficiente Dice, IoU e uso de recursos computacionais.
+- **Resultados esperados**:
+    - Analisar se tratar os dados como blocos espaço-temporais oferece vantagens sobre abordagens sequenciais (CNN-LSTM ou CNN-Transformer).
+
+---
+
+### **Métricas para Todos os Experimentos**
+
+- **IoU (Intersection over Union)**: Avalia a precisão da segmentação.
+
+---
+
+### **Análise Comparativa Final**
+
+Após concluir todos os experimentos:
+
+1. **Comparação Quantitativa**:
+    - Compilar métricas de desempenho (e.g., Dice, IoU) para todas as abordagens.
+2. **Comparação Qualitativa**:
+    - Visualizar os resultados da segmentação para sequências representativas.
+    - Destacar pontos fortes e fracos de cada abordagem.
+3. **Análise de Recursos**:
+    - Comparar demandas computacionais para identificar a abordagem mais prática para aplicações em larga escala.
