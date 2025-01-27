@@ -138,11 +138,11 @@ def display_binary_metrics(model, data_loader, device, threshold=0.5,
         for inp, lab in data_loader:
             inp, lab = inp.to(device), lab.to(device)
             outputs = model(inp)
-            outputs = torch.nn.functional.interpolate(
-                outputs,
-                size=lab.shape[-2:],
-                mode="bilinear",
-                align_corners=False)
+            # outputs = torch.nn.functional.interpolate(
+            #     outputs,
+            #     size=lab.shape[-2:],
+            #     mode="bilinear",
+            #     align_corners=False)
             
             # # Binary: Apply threshold
             predictions = (outputs > threshold).long()

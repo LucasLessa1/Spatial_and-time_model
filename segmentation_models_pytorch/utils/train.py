@@ -94,11 +94,11 @@ class TrainEpoch(Epoch):
     def batch_update(self, x, y):
         self.optimizer.zero_grad()
         prediction = self.model.forward(x)
-        prediction = torch.nn.functional.interpolate(
-            prediction,
-            size=y.shape[-2:],
-            mode="bilinear",
-            align_corners=False)
+        # prediction = torch.nn.functional.interpolate(
+        #     prediction,
+        #     size=y.shape[-2:],
+        #     mode="bilinear",
+        #     align_corners=False)
         # Usando outra loss eu preciso
         prediction = prediction.squeeze(1)
         # prediction = torch.argmax(prediction, dim=1)
@@ -113,51 +113,6 @@ class TrainEpoch(Epoch):
         loss.backward()
         self.optimizer.step()
         return loss, prediction
-
-    def convert_prediction_to_labels(self, prediction):
-        rgb_to_label = {
-        (64, 128, 64): 0,  # Animal
-        (192, 0, 128): 1,  # Archway
-        (0, 128, 192): 2,  # Bicyclist
-        (0, 128, 64): 3,   # Bridge
-        (128, 0, 0): 4,    # Building
-        (64, 0, 128): 5,   # Car
-        (64, 0, 192): 6,   # CartLuggagePram
-        (192, 128, 64): 7, # Child
-        (192, 192, 128): 8,# Column_Pole
-        (64, 64, 128): 9,  # Fence
-        (128, 0, 192): 10, # LaneMkgsDriv
-        (192, 0, 64): 11,  # LaneMkgsNonDriv
-        (128, 128, 64): 12,# Misc_Text
-        (192, 0, 192): 13, # MotorcycleScooter
-        (128, 64, 64): 14, # OtherMoving
-        (64, 192, 128): 15,# ParkingBlock
-        (64, 64, 0): 16,   # Pedestrian
-        (128, 64, 128): 17,# Road
-        (128, 128, 192): 18,# RoadShoulder
-        (0, 0, 192): 19,   # Sidewalk
-        (192, 128, 128): 20,# SignSymbol
-        (128, 128, 128): 21,# Sky
-        (64, 128, 192): 22,# SUVPickupTruck
-        (0, 0, 64): 23,    # TrafficCone
-        (0, 64, 64): 24,   # TrafficLight
-        (192, 64, 128): 25,# Train
-        (128, 128, 0): 26, # Tree
-        (192, 128, 192): 27,# Truck_Bus
-        (64, 0, 64): 28,   # Tunnel
-        (192, 192, 0): 29, # VegetationMisc
-        (0, 0, 0): 30,     # Void
-        (64, 192, 0): 31   # Wall
-    }
-        prediction_np = prediction.detach().cpu().numpy()
-
-        prediction_labels = np.zeros(prediction_np.shape[:2], dtype=np.uint8)
-
-        for rgb, label in rgb_to_label.items():
-            mask = np.all(prediction_np == rgb, axis=-1)
-            prediction_labels[mask] = label
-
-        return torch.tensor(prediction_labels, dtype=torch.long).to(prediction.device)
 
 
 
@@ -179,11 +134,11 @@ class ValidEpoch(Epoch):
     def batch_update(self, x, y):
         with torch.no_grad():
             prediction = self.model.forward(x)
-            prediction = torch.nn.functional.interpolate(
-                prediction,
-                size=y.shape[1:3],
-                mode="bilinear",
-                align_corners=False)
+            # prediction = torch.nn.functional.interpolate(
+            #     prediction,
+            #     size=y.shape[1:3],
+            #     mode="bilinear",
+            #     align_corners=False)
             # Usando outra loss eu preciso
             prediction = prediction.squeeze(1)
             if self.loss.__class__.__name__ == 'CrossEntropyLoss':
